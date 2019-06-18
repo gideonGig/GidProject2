@@ -1,0 +1,9 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=B612+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css?family=B612+Mono|Montserrat&display=swap');
+
+
+body {
+  font-family: 'B612 Mono', monospace;
+  font-family: 'Montserrat', sans-serif;
+}
