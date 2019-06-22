@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<!-- saved from url=(0036)https://s.bootsnipp.com/iframe/WayxX -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="robots" content="noindex, nofollow">
+
+    <title>CSS Card Style Design  - Bootsnipp.com</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="./bootstrap.min(1).css" rel="stylesheet" id="bootstrap-css">
+    <style type="text/css">
+    @import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+.card-container {
+    width: 1000px;
+    margin: 15px auto 0;
+    height: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 440px;
+    grid-gap: 40px;
+}
+
+    .card-container .custom-card {
+        position:relative;
+        background: #000;
+        overflow: hidden;
+        border-radius: 10px;
+        transition: .5s;
+        height:350px;
+
+    }
+
+    .card-container .custom-card:hover {
+        transform: translateY(-20px);
+        box-shadow: 0 20px 20px rgba(0,0,0,0.2);
+
+    }
+        .card-container .custom-card .card-img-box {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: 0.5s;
+        }
+
+        .card-container .custom-card:hover .card-img-box {        
+            opacity: 0.5;
+        }
+
+        .card-container .custom-card .card-img-box img {
+            width:350px;
+            height: 100%;
+        }
+
+        .card-container .custom-card .card-content {
+            position: absolute;
+            width: 100%;
+            height: 60%;
+            bottom: -100%;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            transition: 0.5s;
+            padding-top: 30px;
+        }
+
+        .card-container .custom-card:hover .card-content {
+            bottom:0
+        }
+            
+        .card-container .custom-card:nth-child(1) {
+            background: linear-gradient(0deg, #c21833, transparent)
+        }
+        .card-container .custom-card:nth-child(2) {
+            background: linear-gradient(0deg, #8012a5, transparent)
+        }
+        .card-container .custom-card:nth-child(3) {
+            background: linear-gradient(0deg, #3a414c, transparent)
+        }
+
+        .card-container .custom-card .card-content h2 {
+            margin: 0 0 10px;
+            padding:0;
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .card-container .custom-card .card-content h2 span {        
+            color: #ffeb3b;
+            font-size: 16px;
+        }
+
+        .card-container .custom-card .card-content p {
+            margin: 0;
+            padding: 0;
+            color: #fff;
+            font-size: 13px;
+        }
+
+        .card-container .custom-card .card-content ul {
+            display: flex;
+            margin: 10px 0 0;
+            padding: 0;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-container .custom-card .card-content ul  li {
+            list-style: none;
+
+        }
+
+            .card-container .custom-card .card-content ul li a {
+                color: #fff;
+                padding: 0 10px;
+                font-size: 18px;
+                transition: 0.5s;
+            }    </style>
+    <script src="./jquery.min.js.download"></script>
+    <script src="./bootstrap.min.js(1).download"></script>
+    <script type="text/javascript">
+        window.alert = function(){};
+        var defaultCSS = document.getElementById('bootstrap-css');
+        function changeCSS(css){
+            if(css) $('head > link').filter(':first').replaceWith('<link rel="stylesheet" href="'+ css +'" type="text/css" />'); 
+            else $('head > link').filter(':first').replaceWith(defaultCSS); 
+        }
+        $( document ).ready(function() {
+          var iframe_height = parseInt($('html').height()); 
+          window.parent.postMessage( iframe_height, 'https://bootsnipp.com');
+        });
+    </script>
+</head>
+<body>
+      <link rel="stylesheet" href="./all.css" crossorigin="anonymous">
+<div class="container">
+    <h2 class="text-center">Card Style Design - By Techhowdy(demonguru18)</h2>
+    <br>
+<div class="card-container">
+    <div class="custom-card">
+        <div class="card-img-box">
+            <img src="./001759_profil.jpg">
+        </div>
+        <div class="card-content">
+            <h2>Michelle Doe<br><span>Apple Inc - ISR</span></h2>
+            <p>
+                I am a BMW fan and I love the fantastic feel and drive of my new X1 2018.
+                The sales experience was amazing. See Techhowdy at Cardealer BMW
+            </p>
+
+            <ul>
+                <li><a href="https://s.bootsnipp.com/iframe/WayxX#"><i class="fab fa-facebook-f"></i></a></li>
+                <li><a href="https://s.bootsnipp.com/iframe/WayxX#"><i class="fab fa-twitter"></i></a></li>
+                <li><a href="https://s.bootsnipp.com/iframe/WayxX#"><i class="fab fa-linkedin"></i></a></li>
+                <li><a href="https://s.bootsnipp.com/iframe/WayxX#"><i class="fab fa-google-plus"></i></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="custom-card">
+        <div class="card-img-box">
+            <img src="./5899ffcf6e09a897008b5c04-750-750.jpg">
+        </div>
+        <div class="card-content">
+            <h2>John Smith<br><span>BD Bank - DRM</span></h2>
+            <p>
+                I had Not purchased a new vehicle since the last 20 years.
+                All the staff at Techhowdy Cardealer were more than accommodating.
+            </p>
+
+            <ul>
+                <li><a href="https://s.bootsnipp.com/iframe/WayxX#"><i class="fab fa-facebook-f"></i></a></li>
+                <li><a href="https://s.bootsnipp.com/iframe/WayxX#"><i class="fab fa-twitter"></i></a></li>
+                <li><a href="https://s.bootsnipp.com/iframe/WayxX#"><i class="fab fa-linkedin"></i></a></li>
+                <li><a href="https://s.bootsnipp.com/iframe/WayxX#"><i class="fab fa-google-plus"></i></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="custom-card">
+        <div class="card-img-box">
+            <img src="./profilephoto1.webp">
+
+        </div>
+        <div class="card-content">
+            <h2>Angela Wu<br><span>Seneca - Student</span></h2>
+            <p>
+                I just bought a truck for myself from Techhowdy Cardealer and was dealing with lyoid.
+                he is excellent in customer sale and service.
+            </p>
+
+            <ul>
+                <li><a href="https://s.bootsnipp.com/iframe/WayxX#"><i class=""></i></a></li>
+                <li><a href="https://s.bootsnipp.com/iframe/WayxX#"><i class="fab fa-twitter"></i></a></li>
+                <li><a href="https://s.bootsnipp.com/iframe/WayxX#"><i class="fab fa-linkedin"></i></a></li>
+                <li><a href="https://s.bootsnipp.com/iframe/WayxX#"><i class="fab fa-google-plus"></i></a></li>
+            </ul>
+        </div>
+    </div>
+</div>  
+
+</div>	<script type="text/javascript">
+		</script>
+
+
+</body></html>
