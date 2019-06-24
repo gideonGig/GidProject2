@@ -55,9 +55,9 @@ namespace ng_Core.Controllers
                 // add user to Customer Role
                 await _userManager.AddToRoleAsync(user, "Customer");
 
-                // send confirmation Email
+                // send confirmation Email using sendGrid email server
 
-                //sends response to the client without the passoword
+                //sends response to the client without the password
                 return Ok(new { username = user.UserName, email = user.Email, status = 1, message = "Registration Successful" });
             }
              
@@ -125,7 +125,7 @@ namespace ng_Core.Controllers
                 //create token
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 return Ok(new { token = tokenHandler.WriteToken(token), expiration = token.ValidTo,
-                                username = user.UserName, userRole =roles.FirstOrDefault()});
+                                username = user.UserName, userRole = roles.FirstOrDefault()});
                 
 
             }

@@ -20,10 +20,13 @@ export class RegisterComponent implements OnInit {
   email: FormControl;
   invalidRegister: boolean;
   errorList: string[];
+  modalMessage: string;
+
+  test: any[] = [];
 
   constructor(private router: Router, private acc: AccountService, private fb: FormBuilder, private modalService: BsModalService) { }
 
-  @ViewChild('template', { static: true }) modal: TemplateRef<any>;
+  @ViewChild('template', { static: false }) modal: TemplateRef<any>;
 
   onSubmit()
   {
@@ -35,10 +38,20 @@ export class RegisterComponent implements OnInit {
       this.router.navigate(['/login']);
     }, error => {
 
-        console.log(error);
+        this.errorList = [];
+        for (var i = 0; i < error.error.value; i++)
+        {
+          this.errorList.push(error.error.value[i]);
+          //console.log(error.error.value[i]);
+        }
+
+        //console.log(error);
+        this.modalMessage = "your registration was unsuccesful";
+
+        this.modalRef = this.modalService.show(this.modal);
       }
     );
-    this.modalRef = this.modalService.show(this.modal);
+   
   }
   
   MustMatch(passwordControl: AbstractControl): ValidatorFn
@@ -57,7 +70,7 @@ export class RegisterComponent implements OnInit {
         return null;
       }
       // set error or matching control if validation fails.
-      if (cpasswordControl.value !== !passwordControl.value)
+      if (passwordControl.value !== cpasswordControl.value) 
       {
         return { 'mustMatch': true };
       }

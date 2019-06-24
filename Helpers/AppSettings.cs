@@ -14,5 +14,9 @@ namespace ng_Core.Helpers
         public string ExpireTime { get; set; }
         public string Secret { get; set; }
 
+        //properties for sendgrid
+        public string SendGridKey { get; set; }
+        public string SendGridUser { get; set; }
+
     }
 }

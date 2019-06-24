@@ -27,7 +27,7 @@ export class AccountService
   register(username: string, Password: string, email: string)
   {
     return this.http.post<any>(this.baseUrlRegister, { username, Password, email }).pipe(
-      map(result =>
+      map((result) =>
       {
         return result;
       }, error =>
