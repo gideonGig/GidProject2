@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using ng_Core.Data;
+using ng_Core.Email;
 using ng_Core.Helpers;
 using System;
 using System.Text;
@@ -30,6 +31,7 @@ namespace ng_Core
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSendGridEmailSender();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

@@ -5,10 +5,12 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using ng_Core.Email;
 using ng_Core.Helpers;
 using ng_Core.Models;
 
@@ -24,13 +26,17 @@ namespace ng_Core.Controllers
 
         private readonly AppSettings _appSettings;
 
+        private IEmailSender _emailSender;
+       
         //initialise the private variables in the constructor.
         //recommends that Appsetings should be initalilsed using an interface
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IOptions<AppSettings> appSettings)
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,
+                                        IOptions<AppSettings> appSettings, IEmailSender emailSender )
         {
             _userManager = userManager;
             _signManager = signInManager ;
             _appSettings = appSettings.Value;
+            _emailSender = emailSender;
         }
 
         [HttpPost("[action]")]
@@ -56,7 +62,12 @@ namespace ng_Core.Controllers
                 await _userManager.AddToRoleAsync(user, "Customer");
 
                 // send confirmation Email using sendGrid email server
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
+                var callBackurl = Url.Action("ConfirmEmail", "Account", new { UserId = user.Id, Code = code }, protocol : HttpContext.Request.Scheme);
+
+                await _emailSender.SendEmailAsync(user.Email, "Giddy.com Confirm Your Email", "please confirm your mail: <a href=\"" + callBackurl + "\">click here</a>");
+                
                 //sends response to the client without the password
                 return Ok(new { username = user.UserName, email = user.Email, status = 1, message = "Registration Successful" });
             }
@@ -133,6 +144,49 @@ namespace ng_Core.Controllers
             //if result credentials has issues
             ModelState.AddModelError("", "UserName AND Password was not found");
             return BadRequest(ModelState);
+
+        }
+
+        [HttpGet("[action]")]
+        [AllowAnonymous]
+        public async Task<ActionResult> ConfirmEmail(string userId, string code)
+        {
+            List<string> errorList = new List<string>();
+
+            if (string.IsNullOrWhiteSpace(userId)||string.IsNullOrWhiteSpace(code))
+            {
+                ModelState.AddModelError("", "User ID and Code are required");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return new JsonResult("ERROR");
+            }
+            if (user.EmailConfirmed)
+            {
+                return Redirect("/login");
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("EmailConfirmed", "Notification", new { userId, code });
+            }
+
+            else
+            {
+               
+                foreach(var err in result.Errors)
+                {
+                    ModelState.AddModelError("", err.Description);
+                    errorList.Add(err.Description);
+                }
+            }
+
+            return BadRequest(new JsonResult(errorList));
 
         }
 

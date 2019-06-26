@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ng_Core.Services
 {
-    public class SendGridEmailSender
+    public class SendGridEmailSender : IEmailSender
     {
         private readonly AppSettings _appSettings;
 
