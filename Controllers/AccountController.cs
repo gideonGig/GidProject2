@@ -95,8 +95,7 @@ namespace ng_Core.Controllers
         {
             //create an object to get user specific entity from database, find user by name asynchronously using dependency Injection
             var user = await _userManager.FindByNameAsync(formdata.UserName);
-            //create role
-            var roles = await _userManager.GetRolesAsync(user);
+           
 
             var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_appSettings.Secret));
 
@@ -106,7 +105,16 @@ namespace ng_Core.Controllers
             if(user != null && await  _userManager.CheckPasswordAsync(user, formdata.Password))
             {
                 //confirmation Email
+                if(!await _userManager.IsEmailConfirmedAsync(user))
+                {
+                    ModelState.AddModelError(string.Empty, "User Has not confirmed Email");
 
+                    return BadRequest(new { LoginError = "We sent a confirmation Mail." +
+                                                 "Please confirm your registration with giddy.com" });
+                }
+
+                    //create role
+                var roles = await _userManager.GetRolesAsync(user);
 
                 //generate a token handler to hook to tokenDescriptoy
                 var tokenHandler = new JwtSecurityTokenHandler();
@@ -181,12 +189,13 @@ namespace ng_Core.Controllers
                
                 foreach(var err in result.Errors)
                 {
-                    ModelState.AddModelError("", err.Description);
-                    errorList.Add(err.Description);
+                   
+                    errorList.Add(err.ToString());
                 }
+                return new JsonResult(errorList);
             }
 
-            return BadRequest(new JsonResult(errorList));
+          
 
         }
 

@@ -47,13 +47,18 @@ export class AccountService
         if (result && result.token)
         {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
-          this.loginStatus.next(true);
+         
           localStorage.setItem('loginStatus', '1');
           localStorage.setItem('jwt', result.token);
           localStorage.setItem('username', result.username);
           localStorage.setItem('expiration', result.expiration);
           localStorage.setItem('username', result.username);
           localStorage.setItem('userRole', result.userRole);
+
+
+          this.loginStatus.next(true);
+          this.userName.next(localStorage.getItem('username'));
+          this.userRole.next(localStorage.getItem('userRole'));
         }
 
         return result;
@@ -78,6 +83,12 @@ export class AccountService
 
   checkLoginStatus() : boolean
   {
+    var loginCookie = localStorage.getItem("loginStatus");
+
+    if (loginCookie == "1")
+    {
+      return true;
+    }
     return false;
   }
 

@@ -31,6 +31,8 @@ namespace ng_Core
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+
             services.AddSendGridEmailSender();
 
             // In production, the Angular files will be served from this directory
@@ -130,12 +132,13 @@ namespace ng_Core
             }
 
             //call this method app.UseAuthentication before app.UseMVC
-            app.UseAuthentication();
+     
             app.UseCors("EnableCors");
+            app.UseWebSockets();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-         
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
@@ -150,6 +153,8 @@ namespace ng_Core
                 // see https://go.microsoft.com/fwlink/?linkid=864501
 
                 spa.Options.SourcePath = "ClientApp";
+
+                spa.Options.StartupTimeout = new TimeSpan(0, 5, 0);
 
                 if (env.IsDevelopment())
                 {

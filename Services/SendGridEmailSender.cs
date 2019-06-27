@@ -4,8 +4,6 @@ using ng_Core.Helpers;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ng_Core.Services

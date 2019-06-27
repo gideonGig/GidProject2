@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit
       {
         this.invalidLogin = true;
 
-        this.ErrorMessage = "invalid details supplied";
+        this.ErrorMessage = error.error.loginError;
         console.log(this.ErrorMessage);
 
       } )

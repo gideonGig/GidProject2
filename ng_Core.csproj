@@ -28,7 +28,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="obj\ng_Core.csproj.nuget.dgspec.json" />
+    <Content Include="obj\project.assets.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="obj\ng_Core.csproj.EntityFrameworkCore.targets" />
+    <None Include="obj\ng_Core.csproj.nuget.cache" />
+    <None Include="obj\ng_Core.csproj.nuget.g.props" />
+    <None Include="obj\ng_Core.csproj.nuget.g.targets" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
