@@ -100,6 +100,7 @@ export class AccountService
 
       if (decoded.exp === undefined)
       {
+
         return false;
       }
 
