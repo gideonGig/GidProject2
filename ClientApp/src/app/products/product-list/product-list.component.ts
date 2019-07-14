@@ -6,6 +6,8 @@ import { Observable, Subject } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 import { ProductService } from '../../services/product.service';
 
+
+
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
@@ -47,6 +49,7 @@ export class ProductListComponent implements OnInit {
   dtTrigger: Subject<any> = new Subject();
 
   @ViewChild(DataTableDirective, { static: true }) dtElement: DataTableDirective;
+
 
   constructor(private productService: ProductService,
     private modalService: BsModalService,
