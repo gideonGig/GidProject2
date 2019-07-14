@@ -24,6 +24,7 @@
             ],
             "styles": [
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "./node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
               "src/styles.css"
             ],
             "scripts": [

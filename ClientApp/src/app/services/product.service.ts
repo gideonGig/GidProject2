@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Product } from '../interfaces/product';
+import { Product } from '../interface/product';
 import { flatMap, first, shareReplay } from 'rxjs/operators';
-j
+
 
 @Injectable({
   providedIn: 'root'
@@ -33,24 +33,26 @@ export class ProductService {
   getProductsById(id: number): Observable<Product>
   {
     return this.getProducts().pipe(flatMap(result => result), first(product => product.productId == id));
-
+  }
   //insert product
-  insertProduct(newProduct: Product): Observable<product>
+  insertProduct(newProduct: Product): Observable<Product>
   {
+      return this.http.post<Product>(this.productUrl, newProduct); 
   }
 
   //update Product
-  updateProduct(id: number, editProduct: Product): Observable<product>
+  updateProduct(id: number, editProduct: Product): Observable<Product>
   {
-
+    return this.http.put<Product>(this.updateUrl + id, editProduct);
   }
 
   deleteProduct(id: number): Observable<any>
   {
+    return this.http.delete(this.deleteUrl + id);
   }
 
   //clear cache
-  clearcache()
+  clearCache()
   {
     this.product$ = null;
   }

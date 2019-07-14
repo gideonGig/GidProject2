@@ -1,0 +1,211 @@
+
+
+<div class="container-fluid">
+
+  <button class="btn btn-warning mb-3 float-right text-uppercase" *ngIf="userRoleStatus == 'Admin'" (click)="onAddProduct()"><i class="fa fa-plus"></i> Add Product</button>
+  <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered row-border hover" style="width:100%">
+    <thead class="text-center thead-dark">
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>In Stock</th>
+        <th>Price (CAD)</th>
+        <th>Image</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products" class="text-center">
+        <td>{{product.productId}}</td>
+        <td>{{product.name | uppercase}}</td>
+        <td>{{product.description}}</td>
+        <td>{{true == product.outofstock ?  'No ': 'Yes '}}</td>
+        <td>{{product.price | currency: 'CAD':'symbol-narrow':'.2'}}</td>
+        <td><img [src]="product.imageUrl" *ngIf="product.imageUrl" style="float:right" width="75" /></td>
+        <td>
+          <div class="btn-group mt-2" role="group">
+            <button type="button" class="btn btn-success" (click)="onSelect(product)"><i class="fas fa-list"></i></button>
+            <button type="button" class="btn btn-primary" *ngIf="userRoleStatus == 'Admin'" (click)="onUpdateModal(product)"><i class="fas fa-edit"></i></button>
+            <button type="button" class="btn btn-danger" *ngIf="userRoleStatus == 'Admin'" (click)="onDelete(product)"><i class="fas fa-trash-alt"></i></button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+    
+
+<!-- ADD PRODUCT MODAL START-->
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title">ADD NEW PRODUCT</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    <p class="list-group-item active text-center text-uppercase">{{modalMessage}}</p>
+    <form [formGroup]="insertForm" (ngSubmit)="onSubmit()">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="productTitle"><i class="fa fa-pencil-square-o"></i></span>
+            </div>
+            <input type="text" id="name" formControlName="name" class="form-control" placeholder="eg: Macbook Air 2019" aria-label="name" aria-describedby="productTitle">
+          </div>
+          <div class="errorMessage" *ngIf="name.touched && name.errors">
+            <span *ngIf="name.hasError('required')">Product Name is required.</span>
+            <span *ngIf="name.hasError('maxlength')">Only 50 characters allowed for Product Name.</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="productDescription"><i class="fa fa-pencil-square-o"></i></span>
+            </div>
+            <textarea formControlName="description" class="form-control" placeholder="Describe the Product - Max 150 Characters" aria-label="Description" aria-describedby="productDescription"></textarea>
+          </div>
+          <div class="errorMessage" *ngIf="description.touched && description.errors">
+            <span *ngIf="description.hasError('required')">Product Description is required.</span>
+            <span *ngIf="description.hasError('maxlength')">Only 150 characters allowed for Product Description.</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <input type="checkbox" formControlName="outOfStock" checked aria-label="Checkbox for following text input">
+              </div>
+            </div>
+            <input type="text" class="form-control" placeholder="Product In Stock" disabled>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fa fa-usd"></i></span>
+            </div>
+            <input formControlName="price" type="text" class="form-control" placeholder="eg: 999.99">
+          </div>
+          <div class="errorMessage" *ngIf="price.touched && price.errors">
+            <span *ngIf="price.hasError('required')">Product Price is required.</span>
+            <span *ngIf="price.hasError('min')">Negative price Not allowed</span>
+            <span *ngIf="price.hasError('max')">Max price allowes is 10000</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="ImageUrl"><i class="fa fa-picture-o"></i></span>
+            </div>
+            <input type="text" formControlName="imageUrl" class="form-control" placeholder="eg: https://i.imgur.com/ApYPYbQ.jpg" aria-label="ImageUrl" aria-describedby="productTitle">
+          </div>
+          <div class="errorMessage" *ngIf="imageUrl.touched && imageUrl.errors">
+            <span *ngIf="imageUrl.hasError('pattern')">Invalid image url.</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <button [disabled]="insertForm.invalid" class="btn btn-primary btn-block">ADD</button>
+        </li>
+      </ul>
+
+    </form>
+
+  </div>
+</ng-template>
+
+<!-- ADD PRODUCT MODAL START-->
+<!-- EDIT PRODUCT MODAL START-->
+
+<ng-template #editTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title">EDIT PRODUCT DETAILS</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    <p class="list-group-item active text-center text-uppercase">{{modalMessage}}</p>
+    <form [formGroup]="updateForm" (ngSubmit)="onUpdate()">
+      <ul class="list-group">
+        <li class="list-group-item" [hidden]="_id">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="productId"><i class="fa fa-key"></i></span>
+            </div>
+            <input type="text" class="form-control" formControlName="id" />
+          </div>
+
+        </li>
+        <li class="list-group-item">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="productTitle"><i class="fa fa-pencil-square-o"></i></span>
+            </div>
+            <input type="text" id="name" formControlName="name" class="form-control" placeholder="eg: Macbook Air 2019" aria-label="name" aria-describedby="productTitle">
+          </div>
+          <div *ngIf="_name.touched && _name.errors" class="errorMessage">
+            <span *ngIf="_name.hasError('required')">Product Name is required.</span>
+            <span *ngIf="_name.hasError('maxlength')">Only 50 characters allowed for Product Name.</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="productDescription"><i class="fa fa-pencil-square-o"></i></span>
+            </div>
+            <textarea formControlName="description" class="form-control" placeholder="Describe the Product - Max 150 Characters" aria-label="Description" aria-describedby="productDescription"></textarea>
+          </div>
+          <div *ngIf="_description.touched && _description.errors" class="errorMessage">
+            <span *ngIf="_description.hasError('required')">Product Description is required.</span>
+            <span *ngIf="_description.hasError('maxlength')">Only 150 characters allowed for Product Description.</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <input type="checkbox" formControlName="outOfStock" checked aria-label="Checkbox for following text input">
+              </div>
+            </div>
+            <input type="text" class="form-control" placeholder="Product In Stock" disabled>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fa fa-usd"></i></span>
+            </div>
+            <input formControlName="price" type="text" class="form-control" placeholder="eg: 999.99">
+          </div>
+          <div *ngIf="_price.touched && _price.errors" class="errorMessage">
+            <span *ngIf="_price.hasError('required')">Product Price is required.</span>
+            <span *ngIf="_price.hasError('min')">Negative price Not allowed</span>
+            <span *ngIf="_price.hasError('max')">Max price allowes is 10000</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="ImageUrl"><i class="fa fa-picture-o"></i></span>
+            </div>
+            <input type="text" formControlName="imageUrl" class="form-control" placeholder="eg: https://i.imgur.com/ApYPYbQ.jpg" aria-label="ImageUrl" aria-describedby="productTitle">
+          </div>
+          <div *ngIf="_imageUrl.touched && _imageUrl.errors"
+               class="errorMessage">
+            <span *ngIf="_imageUrl.hasError('pattern')">Invalid image url.</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <button [disabled]="updateForm.invalid" class="btn btn-primary btn-block">UPDATE</button>
+        </li>
+      </ul>
+
+    </form>
+
+  </div>
+</ng-template>
+
+<!-- EDIT PRODUCT MODAL END-->

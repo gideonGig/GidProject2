@@ -74,7 +74,7 @@ export class AccountService
     localStorage.removeItem('jwt');
     localStorage.removeItem('username');
     localStorage.removeItem('expiration');
-    localStorage.removeIem('userRole');
+    localStorage.removeItem('userRole');
     localStorage.setItem('loginStatus', '0');
     this.router.navigate(['/login']);
     console.log("Logged Out Succesfully");

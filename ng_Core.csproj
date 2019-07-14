@@ -37,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="ng_Core.sln" />
     <None Include="obj\ng_Core.csproj.EntityFrameworkCore.targets" />
     <None Include="obj\ng_Core.csproj.nuget.cache" />
     <None Include="obj\ng_Core.csproj.nuget.g.props" />

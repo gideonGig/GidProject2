@@ -3,7 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { ProductsComponent } from './products/products.component';
+import { AccessDeniedComponent } from './errors/access-denied/access-denied.component';
+
 
 
 const routes: Routes = [];
@@ -14,7 +15,8 @@ const routes: Routes = [];
     { path: '', component: HomeComponent, pathMatch:'full' },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
-    { path: 'products', component: ProductsComponent },
+    { path: "products", loadChildren: './products/products.module#ProductsModule' },
+    { path: "access-denied", component: AccessDeniedComponent},
     { path: '**', redirectTo: '/home' }
 
   ])],
