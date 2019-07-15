@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Product } from '../../interface/product';
@@ -13,7 +13,8 @@ import { ProductService } from '../../services/product.service';
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit, OnDestroy
+{
 
   // for the FormControl - AddingProducts
   insertForm: FormGroup;
@@ -53,7 +54,8 @@ export class ProductListComponent implements OnInit {
 
   constructor(private productService: ProductService,
     private modalService: BsModalService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder,
+    private chRef: ChangeDetectorRef) { }
 
   onAddProduct()
   {
@@ -70,7 +72,8 @@ export class ProductListComponent implements OnInit {
         this.products = newlist;
         this.modalRef.hide();
         this.insertForm.reset();
-        this.dtTrigger.next();
+        this.rerender();
+
       });
       console.log('new products have been added');
     },
@@ -78,7 +81,21 @@ export class ProductListComponent implements OnInit {
       );
   }
 
-  ngOnInit() {
+   // method is used destroy the old datatable and rerender it
+  rerender()
+  {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) =>
+    {
+      // destroy the old datatable 
+      dtInstance.destroy();
+      // call dtTrigger to rerender again
+      this.dtTrigger.next();
+    });
+  }
+
+  
+  ngOnInit()
+  {
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 5,
@@ -89,6 +106,10 @@ export class ProductListComponent implements OnInit {
     this.product$ = this.productService.getProducts();
     this.product$.subscribe(result => {
       this.products = result
+
+      //detect for changes
+      this.chRef.detectChanges();
+
       //load products into the datatable
       this.dtTrigger.next();
     });
@@ -100,7 +121,7 @@ export class ProductListComponent implements OnInit {
     let validateImageUrl: string = '^(https?:\/\/.*\.)$';
 
     this.name = new FormControl('', [Validators.required, Validators.maxLength(50)]);
-    this.price = new FormControl('', [Validators.required, Validators.min(0), Validators.max(10000)]);
+    this.price = new FormControl('', [Validators.required, Validators.min(0), Validators.max(90000)]);
     this.description = new FormControl('', [Validators.required, Validators.maxLength(150)]);
     this.imageUrl = new FormControl('', [Validators.pattern(validateImageUrl)]);
 
@@ -114,5 +135,10 @@ export class ProductListComponent implements OnInit {
 
     });
   }
+  ngOnDestroy() {
+    //  always unsubscire your datatables
+    this.dtTrigger.unsubscribe();
+  }
+
 
 }
