@@ -14,8 +14,8 @@ export class ProductService {
   
   private baseUrl: string = "/api/product/getproducts";
   private productUrl: string = "api/product/addproduct";
-  private deleteUrl: string = "api/product/deleteproduct";
-  private updateUrl: string = "api/product/updateproduct";
+  private deleteUrl: string = "api/product/deleteproduct/";
+  private updateUrl: string = "api/product/updateproduct/";
 
   private product$: Observable<Product[]>;
 

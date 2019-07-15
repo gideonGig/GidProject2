@@ -5,6 +5,7 @@ import { Product } from '../../interface/product';
 import { Observable, Subject } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 import { ProductService } from '../../services/product.service';
+import { Router } from '@angular/router';
 
 
 
@@ -55,7 +56,8 @@ export class ProductListComponent implements OnInit, OnDestroy
   constructor(private productService: ProductService,
     private modalService: BsModalService,
     private fb: FormBuilder,
-    private chRef: ChangeDetectorRef) { }
+    private chRef: ChangeDetectorRef,
+    private router: Router) { }
 
   onAddProduct()
   {
@@ -68,7 +70,8 @@ export class ProductListComponent implements OnInit, OnDestroy
       this.productService.clearCache();
       this.product$ = this.productService.getProducts();
 
-      this.product$.subscribe(newlist => {
+      this.product$.subscribe(newlist =>
+      {
         this.products = newlist;
         this.modalRef.hide();
         this.insertForm.reset();
@@ -81,6 +84,72 @@ export class ProductListComponent implements OnInit, OnDestroy
       );
   }
 
+  onUpdate()
+  {
+    let editProduct = this.updateForm.value;
+    this.productService.updateProduct(editProduct.id, editProduct).subscribe(result => {
+      console.log("Product Updated");
+      this.productService.clearCache();
+      this.product$ = this.productService.getProducts();
+
+      this.product$.subscribe(editList =>
+      {
+        this.products = editList;
+        this.modalRef.hide();
+        this.rerender();
+      });
+    },
+      error => console.log('could not update product')
+    );
+  }
+
+  onUpdateModal(productEdit: Product): void
+  {
+    this._id.setValue(productEdit.productId);
+    this._name.setValue(productEdit.name);
+    this._price.setValue(productEdit.price);
+    this._description.setValue(productEdit.description);
+    this._imageUrl.setValue(productEdit.imageUrl);
+
+    //update the form
+    this.updateForm.setValue({
+
+      'id': this._id.value,
+      'name': this._name.value,
+      'price': this._price.value,
+      'description': this._description.value,
+      'imageUrl': this._imageUrl.value,
+      'outOfStock': true
+    });
+
+    //display modal to user
+    this.modalRef = this.modalService.show(this.editModal);
+  }
+
+  onDelete(product: Product): void
+  {
+    this.productService.deleteProduct(product.productId).subscribe(result =>
+    {
+      console.log('product deleted succesfully');
+      this.productService.clearCache();
+      this.product$ = this.productService.getProducts();
+      this.product$.subscribe(remainProduct =>
+      {
+        this.products = remainProduct;
+        this.rerender();
+
+      });
+    },
+      error => console.log('this product could not be deleted')
+    );
+  }
+
+  onSelect(product: Product): void
+  {
+    this.selectedProduct = product;
+    this.router.navigateByUrl("/products/" + product.productId);
+
+  }
    // method is used destroy the old datatable and rerender it
   rerender()
   {
@@ -132,8 +201,25 @@ export class ProductListComponent implements OnInit, OnDestroy
       'description': this.description,
       'imageUrl': this.imageUrl,
       'outOfStock': true,
-
     });
+
+    //initializing update product properties
+    this._name = new FormControl('', [Validators.required, Validators.maxLength(50)]);
+    this._price = new FormControl('', [Validators.required, Validators.min(0), Validators.max(90000)]);
+    this._description = new FormControl('', [Validators.required, Validators.maxLength(150)]);
+    this._imageUrl = new FormControl('', [Validators.pattern(validateImageUrl)]);
+    this._id = new FormControl();
+
+    this.updateForm = this.fb.group({
+
+      'id': this._id,
+      'name': this._name,
+      'price': this._price,
+      'description': this._description,
+      'imageUrl': this._imageUrl,
+      'outOfStock': true
+    });
+
   }
   ngOnDestroy() {
     //  always unsubscire your datatables

@@ -1,211 +1,117 @@
+<ng-template #noproduct>
+  <h2>No Product to Display</h2>
+</ng-template>
 
+<div class="container" *ngIf="product;else noproduct">
+  <div class="card">
+    <div class="row">
+      <aside class="col-sm-5 border-right">
+        <article class="gallery-wrap">
+          <div class="img-big-wrap">
+            <div> <a href="#"><img [src]="product.imageUrl" /></a></div>
+          </div> <!-- slider-product.// -->
+          <div class="img-small-wrap">
+            <div class="item-gallery"> <img [src]="product.imageUrl" /> </div>
+            <div class="item-gallery"> <img [src]="product.imageUrl" /> </div>
+            <div class="item-gallery"> <img [src]="product.imageUrl" /> </div>
+            <div class="item-gallery"> <img [src]="product.imageUrl" /> </div>
+          </div> <!-- slider-nav.// -->
+        </article> <!-- gallery-wrap .end// -->
+      </aside>
+      <aside class="col-sm-7">
+        <article class="card-body p-5">
+          <h3 class="title mb-3">{{product.name | uppercase}}</h3>
 
-<div class="container-fluid">
+          <p class="price-detail-wrap">
+            <span class="price h3 text-warning">
+              <span class="currency">CAD </span><span class="num">{{product.price | currency:'NGN':'symbol-narrow':'.2'}}</span>
+            </span>
 
-  <button class="btn btn-warning mb-3 float-right text-uppercase" *ngIf="userRoleStatus == 'Admin'" (click)="onAddProduct()"><i class="fa fa-plus"></i> Add Product</button>
-  <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered row-border hover" style="width:100%">
-    <thead class="text-center thead-dark">
-      <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>In Stock</th>
-        <th>Price (CAD)</th>
-        <th>Image</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let product of products" class="text-center">
-        <td>{{product.productId}}</td>
-        <td>{{product.name | uppercase}}</td>
-        <td>{{product.description}}</td>
-        <td>{{true == product.outofstock ?  'No ': 'Yes '}}</td>
-        <td>{{product.price | currency: 'CAD':'symbol-narrow':'.2'}}</td>
-        <td><img [src]="product.imageUrl" *ngIf="product.imageUrl" style="float:right" width="75" /></td>
-        <td>
-          <div class="btn-group mt-2" role="group">
-            <button type="button" class="btn btn-success" (click)="onSelect(product)"><i class="fas fa-list"></i></button>
-            <button type="button" class="btn btn-primary" *ngIf="userRoleStatus == 'Admin'" (click)="onUpdateModal(product)"><i class="fas fa-edit"></i></button>
-            <button type="button" class="btn btn-danger" *ngIf="userRoleStatus == 'Admin'" (click)="onDelete(product)"><i class="fas fa-trash-alt"></i></button>
+          </p> <!-- price-detail-wrap .// -->
+
+          <dl class="item-property">
+            <dt class="text-uppercase text-primary"><u>Description</u></dt>
+            <dd>
+              <p>
+                {{product.description}}
+              </p>
+            </dd>
+          </dl>
+          <hr>
+
+          <div class="row">
+            <div class="col-sm-4">
+              <dl class="param param-feature">
+                <dt class="text-uppercase text-primary"><u>Model#</u></dt>
+                <dd>12345611</dd>
+              </dl>  <!-- item-property-hor .// -->
+            </div>
+            <div class="col-sm-4">
+              <dl class="param param-feature">
+                <dt class="text-uppercase text-primary"><u>Select Color</u></dt>
+                <dd>
+                  <div class="color-select">
+                    <input type="radio" name="colorPicked" id="silver" value="small" checked />
+                    <label class="silver" for="silver"></label>
+
+                    <input type="radio" name="colorPicked" id="gold" value="small" />
+                    <label class="gold" for="gold"></label>
+
+                    <input type="radio" name="colorPicked" id="grey" value="small" />
+                    <label class="grey" for="grey"></label>
+                  </div>
+                </dd>
+              </dl>  <!-- item-property-color pick .// -->
+            </div>
+            <div class="col-sm-4">
+              <dl class="param param-feature">
+                <dt class="text-uppercase text-primary"><u>In STOCK</u></dt>
+                <dd>{{true == product.outofstock ? 'No': 'Yes'}}</dd>
+              </dl>  <!-- item-property-hor .// -->
+            </div>
           </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+
+
+
+          <hr>
+          <div class="row">
+            <div class="col-sm-5">
+              <dl class="param param-inline">
+                <dt class="text-uppercase text-primary"><u>Quantity</u></dt>
+                <dd>
+                  <select class="form-control form-control-sm" style="width:70px;">
+                    <option> 1 </option>
+                    <option> 2 </option>
+                    <option> 3 </option>
+                  </select>
+                </dd>
+              </dl>
+            </div> <!-- col.// -->
+            <div class="col-sm-7">
+              <dl class="param param-inline">
+                <dt class="text-uppercase text-primary"><u>RAM Size</u></dt>
+                <dd>
+                  <label class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                    <span class="form-check-label">8 GB</span>
+                  </label>
+                  <label class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                    <span class="form-check-label">16 Gb</span>
+                  </label>
+                  <label class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                    <span class="form-check-label">32 GB</span>
+                  </label>
+                </dd>
+              </dl>  <!-- item-property .// -->
+            </div> <!-- col.// -->
+          </div> <!-- row.// -->
+          <hr>
+          <a href="#" class="btn btn-lg btn-primary text-uppercase"> Buy now </a>
+          <a href="#" class="btn btn-lg btn-outline-primary text-uppercase ml-2"> <i class="fas fa-shopping-cart"></i> Add to cart </a>
+        </article> <!-- card-body.// -->
+      </aside> <!-- col.// -->
+    </div> <!-- row.// -->
+  </div> <!-- card.// -->
 </div>
-    
-
-<!-- ADD PRODUCT MODAL START-->
-<ng-template #template>
-  <div class="modal-header">
-    <h4 class="modal-title">ADD NEW PRODUCT</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body text-center">
-    <p class="list-group-item active text-center text-uppercase">{{modalMessage}}</p>
-    <form [formGroup]="insertForm" (ngSubmit)="onSubmit()">
-      <ul class="list-group">
-        <li class="list-group-item">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="productTitle"><i class="fa fa-pencil-square-o"></i></span>
-            </div>
-            <input type="text" id="name" formControlName="name" class="form-control" placeholder="eg: Macbook Air 2019" aria-label="name" aria-describedby="productTitle">
-          </div>
-          <div class="errorMessage" *ngIf="name.touched && name.errors">
-            <span *ngIf="name.hasError('required')">Product Name is required.</span>
-            <span *ngIf="name.hasError('maxlength')">Only 50 characters allowed for Product Name.</span>
-          </div>
-        </li>
-        <li class="list-group-item">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="productDescription"><i class="fa fa-pencil-square-o"></i></span>
-            </div>
-            <textarea formControlName="description" class="form-control" placeholder="Describe the Product - Max 150 Characters" aria-label="Description" aria-describedby="productDescription"></textarea>
-          </div>
-          <div class="errorMessage" *ngIf="description.touched && description.errors">
-            <span *ngIf="description.hasError('required')">Product Description is required.</span>
-            <span *ngIf="description.hasError('maxlength')">Only 150 characters allowed for Product Description.</span>
-          </div>
-        </li>
-        <li class="list-group-item">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <div class="input-group-text">
-                <input type="checkbox" formControlName="outOfStock" checked aria-label="Checkbox for following text input">
-              </div>
-            </div>
-            <input type="text" class="form-control" placeholder="Product In Stock" disabled>
-          </div>
-        </li>
-        <li class="list-group-item">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fa fa-usd"></i></span>
-            </div>
-            <input formControlName="price" type="text" class="form-control" placeholder="eg: 999.99">
-          </div>
-          <div class="errorMessage" *ngIf="price.touched && price.errors">
-            <span *ngIf="price.hasError('required')">Product Price is required.</span>
-            <span *ngIf="price.hasError('min')">Negative price Not allowed</span>
-            <span *ngIf="price.hasError('max')">Max price allowes is 10000</span>
-          </div>
-        </li>
-        <li class="list-group-item">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="ImageUrl"><i class="fa fa-picture-o"></i></span>
-            </div>
-            <input type="text" formControlName="imageUrl" class="form-control" placeholder="eg: https://i.imgur.com/ApYPYbQ.jpg" aria-label="ImageUrl" aria-describedby="productTitle">
-          </div>
-          <div class="errorMessage" *ngIf="imageUrl.touched && imageUrl.errors">
-            <span *ngIf="imageUrl.hasError('pattern')">Invalid image url.</span>
-          </div>
-        </li>
-        <li class="list-group-item">
-          <button [disabled]="insertForm.invalid" class="btn btn-primary btn-block">ADD</button>
-        </li>
-      </ul>
-
-    </form>
-
-  </div>
-</ng-template>
-
-<!-- ADD PRODUCT MODAL START-->
-<!-- EDIT PRODUCT MODAL START-->
-
-<ng-template #editTemplate>
-  <div class="modal-header">
-    <h4 class="modal-title">EDIT PRODUCT DETAILS</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body text-center">
-    <p class="list-group-item active text-center text-uppercase">{{modalMessage}}</p>
-    <form [formGroup]="updateForm" (ngSubmit)="onUpdate()">
-      <ul class="list-group">
-        <li class="list-group-item" [hidden]="_id">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="productId"><i class="fa fa-key"></i></span>
-            </div>
-            <input type="text" class="form-control" formControlName="id" />
-          </div>
-
-        </li>
-        <li class="list-group-item">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="productTitle"><i class="fa fa-pencil-square-o"></i></span>
-            </div>
-            <input type="text" id="name" formControlName="name" class="form-control" placeholder="eg: Macbook Air 2019" aria-label="name" aria-describedby="productTitle">
-          </div>
-          <div *ngIf="_name.touched && _name.errors" class="errorMessage">
-            <span *ngIf="_name.hasError('required')">Product Name is required.</span>
-            <span *ngIf="_name.hasError('maxlength')">Only 50 characters allowed for Product Name.</span>
-          </div>
-        </li>
-        <li class="list-group-item">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="productDescription"><i class="fa fa-pencil-square-o"></i></span>
-            </div>
-            <textarea formControlName="description" class="form-control" placeholder="Describe the Product - Max 150 Characters" aria-label="Description" aria-describedby="productDescription"></textarea>
-          </div>
-          <div *ngIf="_description.touched && _description.errors" class="errorMessage">
-            <span *ngIf="_description.hasError('required')">Product Description is required.</span>
-            <span *ngIf="_description.hasError('maxlength')">Only 150 characters allowed for Product Description.</span>
-          </div>
-        </li>
-        <li class="list-group-item">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <div class="input-group-text">
-                <input type="checkbox" formControlName="outOfStock" checked aria-label="Checkbox for following text input">
-              </div>
-            </div>
-            <input type="text" class="form-control" placeholder="Product In Stock" disabled>
-          </div>
-        </li>
-        <li class="list-group-item">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fa fa-usd"></i></span>
-            </div>
-            <input formControlName="price" type="text" class="form-control" placeholder="eg: 999.99">
-          </div>
-          <div *ngIf="_price.touched && _price.errors" class="errorMessage">
-            <span *ngIf="_price.hasError('required')">Product Price is required.</span>
-            <span *ngIf="_price.hasError('min')">Negative price Not allowed</span>
-            <span *ngIf="_price.hasError('max')">Max price allowes is 10000</span>
-          </div>
-        </li>
-        <li class="list-group-item">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="ImageUrl"><i class="fa fa-picture-o"></i></span>
-            </div>
-            <input type="text" formControlName="imageUrl" class="form-control" placeholder="eg: https://i.imgur.com/ApYPYbQ.jpg" aria-label="ImageUrl" aria-describedby="productTitle">
-          </div>
-          <div *ngIf="_imageUrl.touched && _imageUrl.errors"
-               class="errorMessage">
-            <span *ngIf="_imageUrl.hasError('pattern')">Invalid image url.</span>
-          </div>
-        </li>
-        <li class="list-group-item">
-          <button [disabled]="updateForm.invalid" class="btn btn-primary btn-block">UPDATE</button>
-        </li>
-      </ul>
-
-    </form>
-
-  </div>
-</ng-template>
-
-<!-- EDIT PRODUCT MODAL END-->

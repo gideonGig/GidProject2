@@ -112,7 +112,7 @@ export class AccountService
 
       // if  Value of Token time is greater than current time token is valid
 
-      if (tokenExpDate.valueOf() < new Date().valueOf())
+      if (tokenExpDate.valueOf() > new Date().valueOf())
       {
         return true
       }
