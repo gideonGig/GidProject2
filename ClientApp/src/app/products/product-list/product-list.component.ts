@@ -6,6 +6,7 @@ import { Observable, Subject } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 import { ProductService } from '../../services/product.service';
 import { Router } from '@angular/router';
+import { AccountService } from '../../services/account.service';
 
 
 
@@ -54,10 +55,11 @@ export class ProductListComponent implements OnInit, OnDestroy
 
 
   constructor(private productService: ProductService,
-    private modalService: BsModalService,
-    private fb: FormBuilder,
-    private chRef: ChangeDetectorRef,
-    private router: Router) { }
+              private modalService: BsModalService,
+              private fb: FormBuilder,
+              private chRef: ChangeDetectorRef,
+              private router: Router,
+              private acct: AccountService) { }
 
   onAddProduct()
   {
@@ -181,6 +183,10 @@ export class ProductListComponent implements OnInit, OnDestroy
 
       //load products into the datatable
       this.dtTrigger.next();
+    });
+
+    this.acct.currentUserRole.subscribe(result => {
+      this.userRoleStatus = result;
     });
 
     // modal message
